@@ -81,7 +81,7 @@
 
                 <!-- Estado de Salud de Microservicios -->
                 <div class="flex items-center gap-2 text-xs">
-                    <div class="health-pill hidden sm:inline-flex" title="API Mascotas (Puerto 8001)">
+                    <div class="health-pill hidden sm:inline-flex cursor-pointer hover:bg-cream-200/60 transition" onclick="verificarSaludAPIs()" title="API Mascotas (Render) — Clic para comprobar estado">
                         <svg class="w-3.5 h-3.5 text-forest-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
                             <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
@@ -91,7 +91,7 @@
                         <span id="health-mascotas" class="health-dot"></span>
                         <span class="font-bold">Mascotas</span>
                     </div>
-                    <div class="health-pill hidden sm:inline-flex" title="API Adopciones (Puerto 8002)">
+                    <div class="health-pill hidden sm:inline-flex cursor-pointer hover:bg-cream-200/60 transition" onclick="verificarSaludAPIs()" title="API Adopciones (Render) — Clic para comprobar estado">
                         <svg class="w-3.5 h-3.5 text-forest-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
                             <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>

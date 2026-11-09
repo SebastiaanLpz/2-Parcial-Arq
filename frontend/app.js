@@ -123,20 +123,40 @@ async function verificarSaludAPIs() {
     const dotMascotas   = document.getElementById("health-mascotas");
     const dotAdopciones = document.getElementById("health-adopciones");
 
-    // API Mascotas
+    let algunError = false;
+
+    // API Mascotas (timeout de 10s para contemplar latencia en la nube)
     try {
-        const res = await fetch(`${MASCOTAS_API_URL}/health`, { signal: AbortSignal.timeout(3000) });
+        const res = await fetch(`${MASCOTAS_API_URL}/health`, { signal: AbortSignal.timeout(10000) });
         if (dotMascotas) dotMascotas.className = res.ok ? "health-dot ok" : "health-dot error";
+        if (!res.ok) algunError = true;
     } catch {
         if (dotMascotas) dotMascotas.className = "health-dot error";
+        algunError = true;
     }
 
-    // API Adopciones
+    // API Adopciones (timeout de 10s para contemplar latencia en la nube)
     try {
-        const res = await fetch(`${ADOPCIONES_API_URL}/health`, { signal: AbortSignal.timeout(3000) });
+        const res = await fetch(`${ADOPCIONES_API_URL}/health`, { signal: AbortSignal.timeout(10000) });
         if (dotAdopciones) dotAdopciones.className = res.ok ? "health-dot ok" : "health-dot error";
+        if (!res.ok) algunError = true;
     } catch {
         if (dotAdopciones) dotAdopciones.className = "health-dot error";
+        algunError = true;
+    }
+
+    // Si alguno falló (por ejemplo, si Render estaba reactivando la instancia), reintentar automáticamente a los 4s
+    if (algunError) {
+        setTimeout(async () => {
+            try {
+                const resM = await fetch(`${MASCOTAS_API_URL}/health`, { signal: AbortSignal.timeout(10000) });
+                if (dotMascotas && resM.ok) dotMascotas.className = "health-dot ok";
+            } catch {}
+            try {
+                const resA = await fetch(`${ADOPCIONES_API_URL}/health`, { signal: AbortSignal.timeout(10000) });
+                if (dotAdopciones && resA.ok) dotAdopciones.className = "health-dot ok";
+            } catch {}
+        }, 4000);
     }
 }
 
@@ -209,6 +229,9 @@ async function cargarMascotas() {
     try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Error ${res.status}`);
+
+        const dotMascotas = document.getElementById("health-mascotas");
+        if (dotMascotas) dotMascotas.className = "health-dot ok";
 
         const mascotas = await res.json();
         if (loading) loading.classList.add("hidden");
@@ -512,6 +535,9 @@ async function cargarSolicitudes() {
     try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Error ${res.status}`);
+
+        const dotAdopciones = document.getElementById("health-adopciones");
+        if (dotAdopciones) dotAdopciones.className = "health-dot ok";
 
         const solicitudes = await res.json();
         if (loading) loading.classList.add("hidden");
