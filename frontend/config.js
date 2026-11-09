@@ -1,9 +1,8 @@
 /**
  * ============================================================
  *  Configuración centralizada del Frontend
- *  Cambiar estas URLs si las APIs se despliegan en la nube.
+ *  URLs de las APIs desplegadas en producción (Render)
  * ============================================================
  */
-const MASCOTAS_API_URL   = "http://localhost:8001";
-const ADOPCIONES_API_URL = "http://localhost:8002";
-
+const MASCOTAS_API_URL   = "https://api-mascotas-d63k.onrender.com";
+const ADOPCIONES_API_URL = "https://api-adopciones-ldy0.onrender.com";

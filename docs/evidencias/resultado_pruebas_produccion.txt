@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.1, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\soyba\OneDrive\Escritorio\2 Parcial Arquitectura\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: c:\Users\soyba\OneDrive\Escritorio\2 Parcial Arquitectura
+plugins: anyio-4.16.0
+collecting ... collected 10 items
+
+tests/test_integracion.py::TestHealthChecks::test_health_mascotas PASSED [ 10%]
+tests/test_integracion.py::TestHealthChecks::test_health_adopciones PASSED [ 20%]
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_disponible_201 PASSED [ 30%]
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_adoptada_409 PASSED [ 40%]
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_inexistente_404 PASSED [ 50%]
+tests/test_integracion.py::TestAprobacion::test_aprobar_solicitud_200_y_mascota_adoptada PASSED [ 60%]
+tests/test_integracion.py::TestAprobacion::test_segunda_aprobacion_misma_mascota_409 PASSED [ 70%]
+tests/test_integracion.py::TestRechazo::test_rechazar_pendiente_200 PASSED [ 80%]
+tests/test_integracion.py::TestRechazo::test_rechazar_ya_rechazada_409 PASSED [ 90%]
+tests/test_integracion.py::TestIdempotencia::test_mismo_estado_200 PASSED [100%]
+
+============================= 10 passed in 22.28s =============================
+

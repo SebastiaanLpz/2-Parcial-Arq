@@ -175,9 +175,25 @@ Garantiza a nivel de BD que solo pueda existir **una solicitud aprobada** por ma
 | PATCH | `/solicitudes/{id}/aprobar` | Aprobar solicitud (flujo SOA) | 200, 404, 409, 503 |
 | PATCH | `/solicitudes/{id}/rechazar` | Rechazar solicitud | 200, 404, 409 |
 
-> 📖 Swagger UI:  
-> - Mascotas: http://localhost:8001/docs  
-> - Adopciones: http://localhost:8002/docs
+> 📖 **Documentación Swagger / OpenAPI**:
+> - **API Mascotas (Local)**: http://localhost:8001/docs
+> - **API Adopciones (Local)**: http://localhost:8002/docs
+> - **API Mascotas (Producción Render)**: https://api-mascotas-d63k.onrender.com/docs
+> - **API Adopciones (Producción Render)**: https://api-adopciones-ldy0.onrender.com/docs
+
+---
+
+## 🌐 Despliegue en la Nube (Producción)
+
+Los servicios se encuentran desplegados y comunicándose en vivo en **Render.com**:
+
+| Servicio | URL de Producción | Documentación Swagger |
+|---|---|---|
+| **API Mascotas** | `https://api-mascotas-d63k.onrender.com` | [`/docs`](https://api-mascotas-d63k.onrender.com/docs) |
+| **API Adopciones** | `https://api-adopciones-ldy0.onrender.com` | [`/docs`](https://api-adopciones-ldy0.onrender.com/docs) |
+| **Frontend Web** | Configurado en `frontend/config.js` | Conectado a APIs de Render |
+
+*Nota sobre el plan gratuito de Render:* Los servicios se suspenden tras inactividad y tardan ~50 segundos en reactivarse con la primera petición HTTP.
 
 ---
 
