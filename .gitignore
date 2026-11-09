@@ -26,6 +26,7 @@ scratch/
 # Archivos PDF y enunciados
 *.pdf
 *.docx
+*.pptx
 *guia_sustentacion*
 
 # IDEs y editores
