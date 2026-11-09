@@ -322,23 +322,27 @@ MASCOTAS_URL=https://api-mascotas.onrender.com ADOPCIONES_URL=https://api-adopci
 
 Los tests crean sus propios datos y los limpian al terminar. No dependen entre sí.
 
-Resultados guardados en [`docs/evidencias/resultado_pruebas_local.txt`](docs/evidencias/resultado_pruebas_local.txt).
+Resultados detallados:
+- **Pruebas en Local (10/10 pasadas)**: [`docs/evidencias/resultado_pruebas_local.txt`](docs/evidencias/resultado_pruebas_local.txt)
+- **Pruebas en Nube Render (10/10 pasadas)**: [`docs/evidencias/resultado_pruebas_produccion.txt`](docs/evidencias/resultado_pruebas_produccion.txt)
 
 ---
 
-## 📸 Evidencias del Flujo
+## 📸 Evidencias del Flujo (Nueva Interfaz)
 
-| Captura | Descripción |
-|---|---|
-| [`01_catalogo.png`](docs/evidencias/01_catalogo.png) | Catálogo de mascotas disponibles |
-| [`02_detalle_milo.png`](docs/evidencias/02_detalle_milo.png) | Modal de detalle de Milo |
-| [`03_formulario_llenado.png`](docs/evidencias/03_formulario_llenado.png) | Formulario de solicitud completado |
-| [`04_solicitud_enviada.png`](docs/evidencias/04_solicitud_enviada.png) | Confirmación de envío exitoso |
-| [`05_admin_pendiente.png`](docs/evidencias/05_admin_pendiente.png) | Panel admin con solicitud pendiente |
-| [`06_confirmar_aprobacion.png`](docs/evidencias/06_confirmar_aprobacion.png) | Modal de confirmación |
-| [`07_aprobacion_exitosa.png`](docs/evidencias/07_aprobacion_exitosa.png) | Solicitud aprobada |
-| [`08_catalogo_milo_adoptada.png`](docs/evidencias/08_catalogo_milo_adoptada.png) | Catálogo con Milo como adoptada |
-| [`09_detalle_milo_adoptada.png`](docs/evidencias/09_detalle_milo_adoptada.png) | Detalle: "no disponible" |
+| Paso | Captura | Descripción de la Evidencia |
+|---|---|---|
+| 01 | [`01_catalogo.png`](docs/evidencias/01_catalogo.png) | Catálogo principal con diseño bosque/crema, pilares con iconos nítidos y health dots en verde |
+| 02 | [`02_detalle_milo.png`](docs/evidencias/02_detalle_milo.png) | Modal rediseñado con cabecera fotográfica, botón frosted glass, badge flotante y atributos |
+| 03 | [`03_formulario_llenado.png`](docs/evidencias/03_formulario_llenado.png) | Formulario de adopción estilizado con validaciones y datos de contacto del solicitante |
+| 04 | [`04_solicitud_enviada.png`](docs/evidencias/04_solicitud_enviada.png) | Confirmación con toast verde de creación exitosa de la solicitud (`201 Created`) |
+| 05 | [`05_admin_pendiente.png`](docs/evidencias/05_admin_pendiente.png) | Panel de administración con la solicitud en estado `Pendiente` y acciones seguras |
+| 06 | [`06_confirmar_aprobacion.png`](docs/evidencias/06_confirmar_aprobacion.png) | Modal de confirmación para evitar aprobaciones accidentales |
+| 07 | [`07_aprobacion_exitosa.png`](docs/evidencias/07_aprobacion_exitosa.png) | Flujo SOA completado: solicitud marcada como `Aprobada` y toast de confirmación |
+| 08 | [`08_catalogo_milo_adoptada.png`](docs/evidencias/08_catalogo_milo_adoptada.png) | Catálogo con Milo actualizada a `Adoptada` vía comunicación inter-servicio |
+| 09 | [`09_detalle_milo_adoptada.png`](docs/evidencias/09_detalle_milo_adoptada.png) | Modal de mascota adoptada con banner protegido ("¡Esta mascota ya encontró un hogar!") |
+| 10 | [`10_vista_movil.png`](docs/evidencias/10_vista_movil.png) | Diseño 100% responsivo en dispositivos móviles (viewport 390x844) |
+| 11 | [`11_swagger_docs.png`](docs/evidencias/11_swagger_docs.png) | Documentación interactiva Swagger / OpenAPI OAS 3.1 desplegada en Render |
 
 ---
 
