@@ -1,0 +1,32 @@
+# Entorno virtual y dependencias
+venv/
+.venv/
+env/
+
+# Python cache y compilados
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Secretos y variables de entorno
+.env
+.env.*
+!.env.example
+
+# Base de datos local de respaldo / SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Scripts temporales
+scratch/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+
+# Docker
+docker-compose.override.yml

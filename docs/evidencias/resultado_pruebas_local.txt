@@ -1,0 +1,32 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.1, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\soyba\OneDrive\Escritorio\2 Parcial Arquitectura\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\soyba\OneDrive\Escritorio\2 Parcial Arquitectura
+plugins: anyio-4.16.0
+collecting ... collected 10 items
+
+tests/test_integracion.py::TestHealthChecks::test_health_mascotas   API Mascotas: {'status': 'healthy', 'service': 'api-mascotas', 'port': 8001, 'version': '1.0.0', 'database': 'connected'}
+PASSED
+tests/test_integracion.py::TestHealthChecks::test_health_adopciones   API Adopciones: {'status': 'healthy', 'service': 'api-adopciones', 'port': 8002, 'version': '1.0.0', 'database': 'connected', 'mascotas_api_target': 'http://localhost:8001'}
+PASSED
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_disponible_201   Solicitud creada: b1db04f5-26c2-4a46-8861-4a440573f60c
+PASSED
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_adoptada_409   409 correcto: La mascota 'TestAdoptada-7317a7' no está disponible (Estado actual: 'adoptada').
+PASSED
+tests/test_integracion.py::TestCrearSolicitud::test_solicitud_mascota_inexistente_404   404 correcto: La mascota con ID '00000000-0000-4000-a000-000000000000' no existe en el sistema.
+PASSED
+tests/test_integracion.py::TestAprobacion::test_aprobar_solicitud_200_y_mascota_adoptada   Aprobada: ¡Solicitud #18f16969-d7b9-48c2-878b-d06e87b45db6 APROBADA exitosamente! Mascota 'TestPet-bcaa09' marcada como adoptada.
+  Mascota verificada: estado=adoptada
+PASSED
+tests/test_integracion.py::TestAprobacion::test_segunda_aprobacion_misma_mascota_409   Primera aprobada OK
+  Segunda rechazada 409: La solicitud #5b3f16d9-c608-472e-8733-27126bd26566 no está en estado 'pendiente' (Estado actual: 'rechazada').
+PASSED
+tests/test_integracion.py::TestRechazo::test_rechazar_pendiente_200   Rechazada OK: La solicitud #632bc0da-ccd6-4f9f-9b39-d21d096fe6b2 ha sido rechazada.
+PASSED
+tests/test_integracion.py::TestRechazo::test_rechazar_ya_rechazada_409   Segunda vez 409: No se puede rechazar la solicitud #2203e042-ed5a-4561-92a6-80656abfa4d6 porque su estado actual es 'rechazada' (solo se pueden rechazar solicitudes 'pendiente').
+PASSED
+tests/test_integracion.py::TestIdempotencia::test_mismo_estado_200   Idempotente OK: estado sigue 'disponible'
+PASSED
+
+============================= 10 passed in 43.51s =============================
+

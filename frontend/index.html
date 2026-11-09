@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación Huellas de Esperanza — Adopción de Mascotas</title>
+
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS por CDN (sin build) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Nunito', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        brand:  { 50:'#FFF8F0', 100:'#FEEFD6', 200:'#FDDCAD', 300:'#FCC47D', 400:'#FAA93B', 500:'#F59E0B', 600:'#D97706', 700:'#B45309', 800:'#92400E', 900:'#78350F' },
+                        cream:  { 50:'#FFFDFB', 100:'#FFF8F0', 200:'#FFF1E0' },
+                        forest: { 500:'#16A34A', 600:'#15803D', 700:'#166534' },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons (versión fija) -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-cream-50 min-h-screen flex flex-col font-sans text-gray-800">
+
+    <!-- ============================================================ -->
+    <!-- HEADER                                                       -->
+    <!-- ============================================================ -->
+    <header class="header-gradient sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2.5 group" onclick="navegarA('catalogo'); return false;">
+                    <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition">
+                        <i data-lucide="paw-print" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-base font-extrabold text-white leading-tight tracking-tight">Huellas de Esperanza</h1>
+                        <p class="text-[10px] text-white/70 font-medium -mt-0.5">Plataforma de Adopción</p>
+                    </div>
+                </a>
+
+                <!-- Navegación -->
+                <nav class="flex items-center gap-1">
+                    <button onclick="navegarA('catalogo')" id="nav-catalogo"
+                        class="nav-btn active" aria-label="Ver catálogo de mascotas">
+                        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                        <span>Catálogo</span>
+                    </button>
+                    <button onclick="navegarA('admin')" id="nav-admin"
+                        class="nav-btn" aria-label="Panel de administración">
+                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                        <span>Administración</span>
+                    </button>
+                </nav>
+
+                <!-- Indicadores de salud -->
+                <div class="hidden sm:flex items-center gap-4 text-xs">
+                    <div class="flex items-center gap-1.5 text-white/80" title="API Mascotas (Puerto 8001)">
+                        <i data-lucide="server" class="w-3.5 h-3.5"></i>
+                        <span id="health-mascotas" class="health-dot"></span>
+                        <span class="font-medium">Mascotas</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-white/80" title="API Adopciones (Puerto 8002)">
+                        <i data-lucide="server" class="w-3.5 h-3.5"></i>
+                        <span id="health-adopciones" class="health-dot"></span>
+                        <span class="font-medium">Adopciones</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- CONTENIDO PRINCIPAL                                          -->
+    <!-- ============================================================ -->
+    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+
+        <!-- ======================================================= -->
+        <!-- VISTA: CATÁLOGO DE MASCOTAS                             -->
+        <!-- ======================================================= -->
+        <section id="vista-catalogo">
+            <!-- Hero -->
+            <div class="hero-section rounded-2xl p-8 sm:p-10 mb-8 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 tracking-tight">Encuentra tu compañero ideal</h2>
+                    <p class="text-white/80 text-sm sm:text-base max-w-xl leading-relaxed">Cada mascota merece un hogar lleno de amor. Explora nuestro catálogo y dale una segunda oportunidad a quien más lo necesita.</p>
+                    <div id="hero-counter" class="mt-4 inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-semibold">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                        <span>Cargando...</span>
+                    </div>
+                </div>
+                <div class="absolute right-0 bottom-0 opacity-10">
+                    <i data-lucide="paw-print" class="w-48 h-48 sm:w-64 sm:h-64"></i>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="filter" class="w-4 h-4 text-gray-400"></i>
+                        <select id="filtro-especie" onchange="cargarMascotas()" class="input-field py-1.5 px-3 text-sm min-w-[120px]" aria-label="Filtrar por especie">
+                            <option value="">Todas las especies</option>
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Conejo">Conejo</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="tag" class="w-4 h-4 text-gray-400"></i>
+                        <select id="filtro-estado" onchange="cargarMascotas()" class="input-field py-1.5 px-3 text-sm min-w-[130px]" aria-label="Filtrar por estado">
+                            <option value="">Todos los estados</option>
+                            <option value="disponible" selected>Disponible</option>
+                            <option value="en_proceso">En proceso</option>
+                            <option value="adoptada">Adoptada</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2 flex-1 min-w-[180px]">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+                        <input id="filtro-nombre" type="text" placeholder="Buscar por nombre..."
+                            oninput="debounceCargarMascotas()"
+                            class="input-field py-1.5 px-3 text-sm w-full" aria-label="Buscar por nombre">
+                    </div>
+                    <button onclick="limpiarFiltros()" class="ml-auto text-sm text-brand-600 hover:text-brand-800 font-semibold flex items-center gap-1 transition" aria-label="Limpiar filtros">
+                        <i data-lucide="x-circle" class="w-4 h-4"></i>
+                        Limpiar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contador -->
+            <p id="contador-mascotas" class="text-sm text-gray-500 mb-4 font-medium"></p>
+
+            <!-- Grid de tarjetas -->
+            <div id="grid-mascotas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Las tarjetas se insertan dinámicamente -->
+            </div>
+
+            <!-- Estado vacío -->
+            <div id="estado-vacio-mascotas" class="hidden text-center py-20">
+                <div class="w-20 h-20 mx-auto bg-brand-50 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="search-x" class="w-10 h-10 text-brand-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-700 mb-2">No se encontraron mascotas</h3>
+                <p class="text-gray-500 text-sm">Intenta con otros filtros de búsqueda.</p>
+            </div>
+
+            <!-- Loading skeleton -->
+            <div id="loading-mascotas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- VISTA: PANEL DE ADMINISTRACIÓN                          -->
+        <!-- ======================================================= -->
+        <section id="vista-admin" class="hidden">
+            <!-- Header admin -->
+            <div class="admin-hero rounded-2xl p-8 sm:p-10 mb-8 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 tracking-tight">Panel de Administración</h2>
+                    <p class="text-white/80 text-sm sm:text-base">Gestiona las solicitudes de adopción: revisa, aprueba o rechaza.</p>
+                </div>
+                <div class="absolute right-4 bottom-4 opacity-10">
+                    <i data-lucide="clipboard-list" class="w-32 h-32"></i>
+                </div>
+            </div>
+
+            <!-- Filtros de solicitudes -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="filter" class="w-4 h-4 text-gray-400"></i>
+                        <select id="filtro-solicitud-estado" onchange="cargarSolicitudes()" class="input-field py-1.5 px-3 text-sm" aria-label="Filtrar solicitudes por estado">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente" selected>Pendiente</option>
+                            <option value="aprobada">Aprobada</option>
+                            <option value="rechazada">Rechazada</option>
+                        </select>
+                    </div>
+                    <button onclick="cargarSolicitudes()" class="btn-secondary text-sm" aria-label="Actualizar solicitudes">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contador -->
+            <p id="contador-solicitudes" class="text-sm text-gray-500 mb-4 font-medium"></p>
+
+            <!-- Tabla -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50/80 border-b border-gray-100">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Solicitante</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Mascota</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Teléfono</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Motivo</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-solicitudes" class="divide-y divide-gray-50">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Estado vacío solicitudes -->
+            <div id="estado-vacio-solicitudes" class="hidden text-center py-20">
+                <div class="w-20 h-20 mx-auto bg-green-50 rounded-2xl flex items-center justify-center mb-5">
+                    <i data-lucide="inbox" class="w-10 h-10 text-green-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-700 mb-2">No hay solicitudes</h3>
+                <p class="text-gray-500 text-sm">Aún no se han registrado solicitudes con ese filtro.</p>
+            </div>
+
+            <!-- Loading solicitudes -->
+            <div id="loading-solicitudes" class="hidden text-center py-16">
+                <div class="spinner mx-auto mb-4"></div>
+                <p class="text-gray-500 text-sm font-medium">Cargando solicitudes...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- MODAL: DETALLE DE MASCOTA + FORMULARIO                       -->
+    <!-- ============================================================ -->
+    <div id="modal-mascota" class="modal-overlay hidden" onclick="cerrarModalSiOverlay(event)" role="dialog" aria-modal="true">
+        <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <!-- Foto -->
+            <div class="relative">
+                <img id="modal-foto" src="" alt="Foto de la mascota" class="w-full h-56 sm:h-72 object-cover rounded-t-2xl">
+                <button onclick="cerrarModal()" class="absolute top-3 right-3 bg-black/40 hover:bg-black/60 text-white w-9 h-9 rounded-full flex items-center justify-center transition backdrop-blur-sm" aria-label="Cerrar modal">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div id="modal-badge-estado" class="absolute bottom-3 left-3"></div>
+            </div>
+
+            <!-- Info -->
+            <div class="p-6">
+                <h2 id="modal-nombre" class="text-2xl font-extrabold text-gray-900 mb-1"></h2>
+                <p id="modal-especie-raza" class="text-gray-500 text-sm mb-5"></p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div class="stat-card">
+                        <i data-lucide="calendar" class="w-4 h-4 text-brand-500 mx-auto mb-1"></i>
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Edad</p>
+                        <p id="modal-edad" class="font-bold text-gray-800 text-sm"></p>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="user" class="w-4 h-4 text-brand-500 mx-auto mb-1"></i>
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Sexo</p>
+                        <p id="modal-sexo" class="font-bold text-gray-800 text-sm"></p>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="paw-print" class="w-4 h-4 text-brand-500 mx-auto mb-1"></i>
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Especie</p>
+                        <p id="modal-especie" class="font-bold text-gray-800 text-sm"></p>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="activity" class="w-4 h-4 text-brand-500 mx-auto mb-1"></i>
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Estado</p>
+                        <p id="modal-estado" class="font-bold text-gray-800 text-sm"></p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Descripción</h3>
+                    <p id="modal-descripcion" class="text-gray-600 text-sm leading-relaxed"></p>
+                </div>
+
+                <!-- Formulario de solicitud -->
+                <div id="form-solicitud-container">
+                    <hr class="border-gray-100 mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="file-edit" class="w-5 h-5 text-brand-500"></i>
+                        Solicitar adopción
+                    </h3>
+                    <form id="form-solicitud" onsubmit="enviarSolicitud(event)" class="space-y-4">
+                        <input type="hidden" id="form-mascota-id">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-nombre" class="form-label">Nombre completo</label>
+                                <div class="input-icon-wrapper">
+                                    <i data-lucide="user" class="input-icon"></i>
+                                    <input id="form-nombre" type="text" required minlength="2" maxlength="150" placeholder="Ej: Carlos Mendoza" class="input-field input-with-icon">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="form-email" class="form-label">Correo electrónico</label>
+                                <div class="input-icon-wrapper">
+                                    <i data-lucide="mail" class="input-icon"></i>
+                                    <input id="form-email" type="email" required placeholder="Ej: carlos@email.com" class="input-field input-with-icon">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="form-telefono" class="form-label">Teléfono</label>
+                            <div class="input-icon-wrapper">
+                                <i data-lucide="phone" class="input-icon"></i>
+                                <input id="form-telefono" type="tel" required minlength="5" maxlength="50" placeholder="Ej: +57 300 1234567" class="input-field input-with-icon">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="form-motivo" class="form-label">¿Por qué deseas adoptar?</label>
+                            <textarea id="form-motivo" required minlength="5" rows="3" placeholder="Cuéntanos por qué deseas darle un hogar..." class="input-field w-full"></textarea>
+                        </div>
+                        <div id="form-error" class="hidden alert alert-error"></div>
+                        <div id="form-success" class="hidden alert alert-success"></div>
+                        <button type="submit" id="btn-enviar-solicitud" class="btn-primary w-full">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                            Enviar solicitud de adopción
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Mensaje no disponible -->
+                <div id="msg-no-disponible" class="hidden">
+                    <hr class="border-gray-100 mb-6">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
+                        <div class="w-12 h-12 mx-auto bg-amber-100 rounded-xl flex items-center justify-center mb-3">
+                            <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600"></i>
+                        </div>
+                        <p class="text-amber-800 font-semibold text-sm">Esta mascota no está disponible para adopción en este momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL: CONFIRMAR ACCIÓN                                      -->
+    <!-- ============================================================ -->
+    <div id="modal-confirmar" class="modal-overlay hidden" onclick="cerrarModalSiOverlay(event)" role="dialog" aria-modal="true">
+        <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+            <h3 id="confirmar-titulo" class="text-lg font-bold text-gray-900 mb-2"></h3>
+            <p id="confirmar-mensaje" class="text-gray-600 text-sm mb-6 leading-relaxed"></p>
+            <div id="confirmar-error" class="hidden alert alert-error mb-4"></div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="cerrarModalConfirmar()" class="btn-ghost text-sm">
+                    Cancelar
+                </button>
+                <button id="btn-confirmar-accion" class="text-sm">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TOAST                                                        -->
+    <!-- ============================================================ -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2"></div>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER                                                       -->
+    <!-- ============================================================ -->
+    <footer class="bg-white border-t border-gray-100 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="paw-print" class="w-5 h-5 text-brand-500"></i>
+                <span class="font-bold text-gray-800">Fundación Huellas de Esperanza</span>
+            </div>
+            <p class="text-xs text-gray-400">
+                Arquitectura Orientada a Servicios &middot; API Mascotas (8001) &middot; API Adopciones (8002) &middot; 2° Parcial Arquitectura de Software
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
