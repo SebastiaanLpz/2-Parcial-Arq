@@ -389,8 +389,9 @@ body {
 .modal-overlay.hidden { display: none; }
 .modal-content {
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: var(--radius-xl);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 25px 60px -15px rgba(27, 59, 43, 0.25), 0 0 0 1px rgba(27, 59, 43, 0.05);
 }
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -401,13 +402,64 @@ body {
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Scrollbar estética y delgada para modales */
+.modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(27, 59, 43, 0.2) transparent;
+}
+.modal-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+    background: rgba(27, 59, 43, 0.22);
+    border-radius: 9999px;
+}
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(27, 59, 43, 0.45);
+}
+
+/* Badge en cabecera del modal */
+#modal-badge-estado .badge-status {
+    position: static;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    padding: 6px 14px;
+    font-size: 0.8125rem;
+    backdrop-filter: blur(8px);
+}
+
 /* Stat card en modal */
 .stat-card {
-    background-color: var(--cream-100);
-    border-radius: var(--radius-md);
+    background-color: #FAF7F2;
+    border-radius: 16px;
     padding: 12px 10px;
     text-align: center;
-    border: 1px solid var(--cream-200);
+    border: 1px solid #EAE3D6;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.stat-card:hover {
+    background-color: #F3ECE0;
+    border-color: #D8CEBD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(27, 59, 43, 0.06);
+}
+.stat-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--forest-800);
+    box-shadow: 0 2px 5px rgba(27, 59, 43, 0.06);
+    margin-bottom: 6px;
 }
 
 /* ---------- Alertas ---------- */
