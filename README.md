@@ -187,11 +187,11 @@ Garantiza a nivel de BD que solo pueda existir **una solicitud aprobada** por ma
 
 Los servicios se encuentran desplegados y comunicándose en vivo en **Render.com**:
 
-| Servicio | URL de Producción | Documentación Swagger |
+| Servicio | URL de Producción | Documentación / Enlace |
 |---|---|---|
+| **Frontend Web** | [`https://huellas-de-esperanza-jytk.onrender.com`](https://huellas-de-esperanza-jytk.onrender.com) | [Abrir Aplicación Web](https://huellas-de-esperanza-jytk.onrender.com) |
 | **API Mascotas** | `https://api-mascotas-d63k.onrender.com` | [`/docs`](https://api-mascotas-d63k.onrender.com/docs) |
 | **API Adopciones** | `https://api-adopciones-ldy0.onrender.com` | [`/docs`](https://api-adopciones-ldy0.onrender.com/docs) |
-| **Frontend Web** | Configurado en `frontend/config.js` | Conectado a APIs de Render |
 
 *Nota sobre el plan gratuito de Render:* Los servicios se suspenden tras inactividad y tardan ~50 segundos en reactivarse con la primera petición HTTP.
 
