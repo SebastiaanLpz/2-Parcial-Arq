@@ -76,7 +76,8 @@ Plataforma web que gestiona el catálogo de mascotas rescatadas y el trámite de
 ├── docs/                  ← Documentación
 │   ├── schema.sql             DDL de las tablas + datos semilla
 │   ├── arquitectura.md        Diagramas Mermaid (componentes, secuencia, ER)
-│   └── evidencias/            Capturas del flujo completo
+│   ├── guia_sustentacion.md   Guion y métodos de prueba para la sustentación
+│   └── evidencias/            Capturas del flujo completo (01 a 11)
 │       ├── 01_catalogo.png
 │       ├── 02_detalle_milo.png
 │       ├── ...
