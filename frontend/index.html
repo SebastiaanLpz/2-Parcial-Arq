@@ -61,14 +61,21 @@
                          onerror="this.onerror=null; this.src='https://placehold.co/200x60?text=Huellas+de+Esperanza';">
                 </a>
 
-                <!-- Navegación: SOLO Inicio y Administración (con iconos visibles garantizados) -->
-                <nav class="flex items-center gap-2 bg-cream-100 p-1.5 rounded-full border border-cream-200 shadow-inner">
+                <!-- Navegación: Inicio, Consultar Solicitud y Administración -->
+                <nav class="flex items-center gap-1 sm:gap-2 bg-cream-100 p-1.5 rounded-full border border-cream-200 shadow-inner">
                     <button onclick="navegarA('catalogo')" id="nav-catalogo"
                         class="nav-pill active" aria-label="Ver catálogo de mascotas">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
                         <span>Inicio</span>
+                    </button>
+                    <button onclick="navegarA('seguimiento')" id="nav-seguimiento"
+                        class="nav-pill" aria-label="Consultar estado de mi solicitud">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>Consultar Solicitud</span>
                     </button>
                     <button onclick="navegarA('admin')" id="nav-admin"
                         class="nav-pill" aria-label="Panel de administración de solicitudes">
@@ -130,6 +137,14 @@
                         <p class="text-white/80 text-sm sm:text-base mt-1 max-w-xl">
                             Ellos están esperando un hogar lleno de amor. Explora nuestro catálogo y dale una segunda oportunidad a tu compañero ideal.
                         </p>
+                        <div class="mt-4 flex flex-wrap items-center gap-3">
+                            <button onclick="navegarA('seguimiento')" class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-full backdrop-blur-sm border border-white/20 transition-all hover:scale-105 shadow-sm">
+                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <span>¿Ya enviaste una solicitud? <strong>Consulta aquí tu estado</strong> &rarr;</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Contador destacado en vivo -->
@@ -272,6 +287,101 @@
                 <div class="skeleton-card"></div>
                 <div class="skeleton-card"></div>
                 <div class="skeleton-card"></div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- VISTA: SEGUIMIENTO DE SOLICITUDES (PORTAL ADOPTANTE)   -->
+        <!-- ======================================================= -->
+        <section id="vista-seguimiento" class="hidden space-y-6">
+            <!-- Header Seguimiento -->
+            <div class="bg-gradient-to-r from-forest-900 via-forest-800 to-forest-700 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-sm">
+                <div class="relative z-10 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3.5 py-1 rounded-full text-xs font-semibold mb-3 border border-white/15">
+                        <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Portal del Adoptante — Consulta en Tiempo Real</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">
+                        Seguimiento de tu Solicitud
+                    </h1>
+                    <p class="text-white/80 text-sm sm:text-base mt-2 leading-relaxed">
+                        Conoce en vivo el estado de tu adopción: entérate si tu solicitud ha sido <strong>aprobada</strong>, continúa <strong>en evaluación</strong> o fue <strong>rechazada</strong> por el equipo de la fundación.
+                    </p>
+                </div>
+                <div class="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+                    <svg class="w-56 h-56" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Caja de Búsqueda -->
+            <div class="bg-white rounded-3xl shadow-sm border border-cream-200 p-6 sm:p-8">
+                <div class="max-w-xl mx-auto text-center mb-6">
+                    <div class="w-12 h-12 bg-forest-100 text-forest-800 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-forest-900">¿Cómo deseas consultar?</h2>
+                    <p class="text-xs sm:text-sm text-forest-800/70 mt-1">
+                        Ingresa el <strong>correo electrónico</strong> con el que registraste tu solicitud o el <strong>código UUID de radicado</strong>.
+                    </p>
+                </div>
+
+                <form onsubmit="consultarEstadoAdoptante(event)" class="max-w-xl mx-auto space-y-3">
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-forest-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                            <input id="input-criterio-seguimiento" type="text" required
+                                placeholder="tu_correo@email.com o código UUID"
+                                class="input-field pl-11 py-3 text-sm w-full font-medium"
+                                aria-label="Correo o código de solicitud">
+                        </div>
+                        <button type="submit" id="btn-buscar-seguimiento" class="btn-dark py-3 px-6 text-sm whitespace-nowrap">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <span>Consultar Estado</span>
+                        </button>
+                    </div>
+
+                    <!-- Solicitudes recientes detectadas en este navegador -->
+                    <div id="chips-solicitudes-recientes" class="pt-2 flex flex-wrap items-center gap-2 text-xs text-forest-800/80">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading de búsqueda -->
+            <div id="loading-seguimiento" class="hidden text-center py-12">
+                <div class="spinner mx-auto mb-3"></div>
+                <p class="text-xs text-forest-800/70 font-bold">Consultando en la base de datos de adopciones...</p>
+            </div>
+
+            <!-- Contenedor donde se insertan los resultados -->
+            <div id="contenedor-resultados-seguimiento" class="space-y-6">
+            </div>
+
+            <!-- Estado Inicial / Vacío -->
+            <div id="estado-inicial-seguimiento" class="text-center py-14 bg-white rounded-3xl border border-cream-200 p-8 max-w-xl mx-auto shadow-sm">
+                <div class="w-16 h-16 mx-auto bg-cream-100 rounded-full flex items-center justify-center mb-4 text-forest-700">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-forest-900 mb-1">Sin consulta activa</h3>
+                <p class="text-sm text-forest-800/70 max-w-md mx-auto">
+                    Ingresa tu correo o código arriba para ver el progreso de tu adopción. O explora el catálogo para radicar una solicitud.
+                </p>
+                <button onclick="navegarA('catalogo')" class="mt-4 btn-outline-dark text-xs py-2 px-5">
+                    Explorar catálogo de mascotas &rarr;
+                </button>
             </div>
         </section>
 

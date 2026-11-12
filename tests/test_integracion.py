@@ -251,3 +251,46 @@ class TestIdempotencia:
         assert r.json()["estado"] == "disponible"
         print(f"  Idempotente OK: estado sigue '{r.json()['estado']}'")
 
+
+# ---------------------------------------------------------------------------
+# TEST 5: Consulta de estado de solicitud para el adoptante (Seguimiento SOA)
+# ---------------------------------------------------------------------------
+class TestConsultaSeguimientoAdoptante:
+
+    def test_consultar_por_email_y_por_uuid(self, mascota):
+        """El adoptante puede consultar su solicitud por email y por radicado UUID."""
+        email_prueba = f"test.seguimiento.{uuid.uuid4().hex[:6]}@email.com"
+        r_crear = client.post(
+            f"{ADOPCIONES_URL}/solicitudes",
+            json={
+                "mascota_id": str(mascota["id"]),
+                "nombre_solicitante": "Solicitante Test Seguimiento",
+                "email": email_prueba,
+                "telefono": "+57 300 9998888",
+                "motivo": "Motivo de prueba para seguimiento de adopción."
+            }
+        )
+        assert r_crear.status_code == 201
+        sol_id = r_crear.json()["id"]
+
+        # 1. Consulta por query param email
+        r_email = client.get(f"{ADOPCIONES_URL}/solicitudes", params={"email": email_prueba})
+        assert r_email.status_code == 200
+        items_email = r_email.json()
+        assert len(items_email) >= 1
+        assert any(s["id"] == sol_id for s in items_email)
+
+        # 2. Consulta por endpoint dedicado con email
+        r_cons_email = client.get(f"{ADOPCIONES_URL}/solicitudes/consultar/{email_prueba}")
+        assert r_cons_email.status_code == 200
+        assert len(r_cons_email.json()) >= 1
+
+        # 3. Consulta por endpoint dedicado con UUID
+        r_cons_uuid = client.get(f"{ADOPCIONES_URL}/solicitudes/consultar/{sol_id}")
+        assert r_cons_uuid.status_code == 200
+        assert len(r_cons_uuid.json()) == 1
+        assert r_cons_uuid.json()[0]["id"] == sol_id
+        assert r_cons_uuid.json()[0]["estado"] == "pendiente"
+        print(f"  Consulta de seguimiento OK: {sol_id} estado '{r_cons_uuid.json()[0]['estado']}'")
+
+

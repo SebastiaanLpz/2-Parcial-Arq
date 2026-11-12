@@ -84,11 +84,12 @@ def crear_solicitud(payload: SolicitudCreate):
     "",
     response_model=List[SolicitudResponse],
     summary="Listar solicitudes de adopción",
-    description="Retorna todas las solicitudes registradas con filtros opcionales por estado y mascota_id."
+    description="Retorna todas las solicitudes registradas con filtros opcionales por estado, mascota_id y email."
 )
 def listar_solicitudes(
     estado: Optional[EstadoSolicitudEnum] = Query(None, description="Filtrar por estado: pendiente, aprobada, rechazada"),
-    mascota_id: Optional[UUID] = Query(None, description="Filtrar por ID de la mascota")
+    mascota_id: Optional[UUID] = Query(None, description="Filtrar por ID de la mascota"),
+    email: Optional[str] = Query(None, description="Filtrar por email del solicitante")
 ):
     try:
         query = supabase.table("solicitudes").select("*")
@@ -96,6 +97,8 @@ def listar_solicitudes(
             query = query.eq("estado", estado.value)
         if mascota_id:
             query = query.eq("mascota_id", str(mascota_id))
+        if email:
+            query = query.ilike("email", email.strip().lower())
 
         res = query.order("created_at", desc=True).execute()
         return res.data or []
@@ -103,6 +106,40 @@ def listar_solicitudes(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error consultando solicitudes en Supabase: {str(e)}"
+        )
+
+@router.get(
+    "/consultar/{criterio}",
+    response_model=List[SolicitudResponse],
+    summary="Consultar solicitudes por correo o por ID para adoptantes",
+    description="Permite al adoptante consultar el estado de sus solicitudes ingresando su correo o UUID de radicado."
+)
+def consultar_solicitudes_adoptante(criterio: str):
+    criterio_limpio = criterio.strip()
+    try:
+        # 1. Si es UUID válido, buscar por ID de solicitud
+        try:
+            val_uuid = str(UUID(criterio_limpio))
+            res_id = supabase.table("solicitudes").select("*").eq("id", val_uuid).execute()
+            if res_id.data:
+                return res_id.data
+        except ValueError:
+            pass
+
+        # 2. Si no es UUID o no se encontró por ID, buscar por correo (case-insensitive)
+        res_email = (
+            supabase.table("solicitudes")
+            .select("*")
+            .ilike("email", criterio_limpio.lower())
+            .order("created_at", desc=True)
+            .execute()
+        )
+        return res_email.data or []
+    except Exception as e:
+        logger.error(f"Error consultando solicitudes del adoptante: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error consultando solicitudes del adoptante: {str(e)}"
         )
 
 @router.get(
